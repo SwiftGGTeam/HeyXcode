@@ -329,7 +329,7 @@ button.lc-row .lc-chev { background: var(--accent-soft); border: 1px solid var(-
 .q15-pager button:hover:not(:disabled), .deck-pager button:hover:not(:disabled) { background: rgb(255 255 255 / .06); }
 .q15-pager button:disabled { opacity: .35; cursor: not-allowed; }
 .q15-count, .deck-count { color: var(--muted-foreground); font-size: 13px; font-variant-numeric: tabular-nums; }
-.q15-card .card-body { padding-top: 0; }
+.q15-card .card-body { padding-top: 28px; }
 
 /* Part 4 · violet */
 .waffle-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); gap: 40px 28px; }
