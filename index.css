@@ -46,7 +46,7 @@ mark { padding: 0; color: var(--foreground); background: none; font-weight: 600;
 [hidden] { display: none !important; }
 
 /* Film grain over everything (static SVG turbulence) */
-body::after { position: fixed; z-index: 60; inset: 0; pointer-events: none; opacity: .5; mix-blend-mode: soft-light; content: ""; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.15' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1.4 -.2'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); }
+body::after { position: fixed; z-index: 60; inset: 0; pointer-events: none; opacity: .5; mix-blend-mode: soft-light; content: ""; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.7' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1.4 -.2'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); }
 
 /* Access gate */
 .auth-gate { position: fixed; z-index: 100; inset: 0; display: grid; place-items: center; padding: 24px; background: var(--background); transition: opacity .3s, visibility .3s; }
