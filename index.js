@@ -353,7 +353,7 @@ const note=html=>`<p class="note"><strong>${text(bi('注意：','Note: '))}</str
 
 /* ---- Pie charts (Part 1) ---- */
 const blueRamp=['#bfdbfe','#93c5fd','#60a5fa','#3b82f6','#2563eb','#1d4ed8'];
-function pieChart(items,ramp){
+function pieChart(items,ramp,rich=false){
   const total=items.reduce((a,[,v])=>a+v,0);const R=96,C=100;let a0=-Math.PI/2;
   const pt=(a,r=R)=>[C+r*Math.cos(a),C+r*Math.sin(a)];
   const slices=items.map(([label,value],i)=>{
@@ -363,8 +363,8 @@ function pieChart(items,ramp){
     const [tx,ty]=pt(mid,R*.66);a0=a1;
     const localized=bi(label,labelTranslations[label]||label);
     return `<g data-slice="${i}"><path d="${d}" fill="${ramp[i]}"><title>${text(localized)}: ${value}%</title></path>${value>=7?`<text x="${tx.toFixed(1)}" y="${ty.toFixed(1)}" fill="${inkFor(ramp[i])}">${value}%</text>`:''}</g>`}).join('');
-  const legend=items.map(([label,value],i)=>{const localized=bi(label,labelTranslations[label]||label);return `<li data-slice="${i}"><i style="background:${ramp[i]}"></i><span>${text(localized)}</span><strong>${value}%</strong></li>`}).join('');
-  return `<div class="pie-wrap"><svg class="pie" viewBox="0 0 200 200" role="img">${slices}</svg><ul class="pie-legend">${legend}</ul></div>`}
+  const legend=items.map(([label,value],i)=>{const localized=bi(label,labelTranslations[label]||label);return `<li data-slice="${i}"><i style="background:${ramp[i]}"></i><span>${text(localized)}</span><strong>${value}%</strong>${rich?`<em class="pie-bar"><u style="width:${value}%;background:${ramp[i]}"></u></em>`:''}</li>`}).join('');
+  return `<div class="pie-wrap${rich?' is-rich':''}"><svg class="pie" viewBox="0 0 200 200" role="img">${slices}</svg><ul class="pie-legend">${legend}</ul></div>`}
 function setupPies(){document.querySelectorAll('.pie-wrap').forEach(wrap=>{const nodes=[...wrap.querySelectorAll('[data-slice]')];const set=i=>nodes.forEach(n=>n.classList.toggle('is-dim',i!==null&&n.dataset.slice!==i));nodes.forEach(n=>{n.addEventListener('mouseenter',()=>set(n.dataset.slice));n.addEventListener('mouseleave',()=>set(null))})})}
 
 /* ---- Part 3 usage rankings ---- */
@@ -400,7 +400,7 @@ function setupChinaUsageRankings(){
 /* ---- Part 1 ---- */
 const profileCard=(title,type,body,cls='')=>card({cls,title,type,body});
 function experiencePie(title,items){return profileCard(title,'single',pieChart(items,blueRamp),'pie-card')}
-function scalePie(items){return pieChart(items,['#bfdbfe','#60a5fa','#3b82f6','#1d4ed8'])}
+function scalePie(items){return pieChart(items,['#bfdbfe','#60a5fa','#3b82f6','#1d4ed8'],true)}
 
 /* ---- Part 2 ---- */
 function aiLifecycle(){
@@ -427,14 +427,15 @@ function frequencyMatrix(){
   const controls=order.map(({item,index})=>`<button type="button" class="f-control" data-frequency-index="${index}" aria-pressed="false"><i style="background:${frequencyColors[index]}"></i><span>${text(item.label)}</span><strong>${item.value}%</strong></button>`).join('');
   return card({cls:'frequency',eyebrow:'Q8',title:bi('过去 30 天的 AI 使用频率','AI use frequency in the past 30 days'),type:'single',body:`<div class="f-layout"><div class="f-controls" role="group" aria-label="${text(bi('AI 使用频率','AI use frequency'))}">${controls}</div><div class="f-grid" aria-label="${text(bi('100 位受访者的 AI 使用频率方块图','100-respondent AI-use frequency matrix'))}">${cells}</div></div>`,foot:text(bi('每个方块代表 1 位受访者；点击左侧选项可高亮对应人群。','Each square represents one respondent; select an option on the left to highlight that group.'))})}
 function selectionRanking(){
-  const row=(label,value,rank,muted)=>`<div class="sel-row${muted?' is-muted':''}"><span class="sel-rank">${rank??''}</span><div><div class="sel-label"><span>${text(label)}</span><strong>${value}%</strong></div><i class="bar"><em style="--fill:${value}%"></em></i></div></div>`;
-  const body=`<div class="sel-grid"><section><h4>${text(bi('最看重 · 排名前五','Most valued · Top five'))}</h4>${part2.selectionTop.map(([label,value],index)=>row(label,value,index+1,false)).join('')}</section><section><h4>${text(bi('最不看重','Least valued'))}</h4>${part2.selectionBottom.map(([label,value])=>row(label,value,'',true)).join('')}</section></div>`;
+  const side=(label,value,muted)=>`<div class="sel-cell${muted?' is-muted':''}"><div class="sel-label"><span>${text(label)}</span><strong>${value}%</strong></div><i class="bar"><em style="--fill:${value}%"></em></i></div>`;
+  const rows=part2.selectionTop.map(([top,topValue],index)=>{const [bottom,bottomValue]=part2.selectionBottom[index];return `<div class="sel-row">${side(top,topValue,false)}<span class="sel-rank">${index+1}</span>${side(bottom,bottomValue,true)}</div>`}).join('');
+  const body=`<div class="sel-head"><span>${text(bi('最看重 · 排名前五','Most valued · Top five'))}</span><span></span><span>${text(bi('最不看重','Least valued'))}</span></div><div class="sel-table">${rows}</div>`;
   return card({cls:'selection',eyebrow:'Q18',title:bi('选择 AI 编程工具时，最看重什么？','What matters most when choosing an AI coding tool?'),type:'multiple',body})}
 function codeLocation(){
   const [primary,secondary]=part2.codeLocations;
-  const tile=(item,cls)=>`<div class="loc-tile ${cls}"><strong class="loc-share">${text(item.workshare)}</strong><p><b>${item.respondentShare}%</b> ${text(bi(cls==='is-primary'?'受访者选择此项':'受访者选择此档',cls==='is-primary'?'of respondents selected this':'of respondents'))}</p></div>`;
+  const tile=(item,cls)=>`<div class="loc-tile ${cls}">${cls==='is-primary'?'<img src="assets/xcode-icon.png" alt="Xcode" loading="lazy">':''}<strong class="loc-share">${text(item.workshare)}</strong><p><b>${item.respondentShare}%</b> ${text(bi(cls==='is-primary'?'受访者选择此项':'受访者选择此档',cls==='is-primary'?'of respondents selected this':'of respondents'))}</p></div>`;
   const insight=text(bi('开发重心已转向其他工具，Xcode 不再是主要入口。','Development has shifted to other tools; Xcode is no longer the primary entry point.'));
-  return card({cls:'code-location',eyebrow:'Q6',title:bi('开发工作有多少仍在 Xcode 中完成？','How much work still happens in Xcode?'),type:'single',insight,body:`<div class="loc-stack"><img src="assets/xcode-icon.png" alt="Xcode" loading="lazy">${tile(primary,'is-primary')}${tile(secondary,'is-secondary')}</div>`})}
+  return card({cls:'code-location',eyebrow:'Q6',title:bi('开发工作有多少仍在 Xcode 中完成？','How much work still happens in Xcode?'),type:'single',insight,body:`<div class="loc-stack">${tile(primary,'is-primary')}${tile(secondary,'is-secondary')}</div>`})}
 function xcodeRoles(){
   const first=3,trailing=3;
   const insight=text(bi('<b>Build / Compile（61%）</b>、<b>Simulator（58%）</b>、<b>Debug（46%）</b>与<b>Signing / Provisioning（30%）</b>构成受访者最常归于 Xcode 的关键工具链职责。相比之下，<b>AI 辅助编程（10%）</b>与<b>测试（5%）</b>较少被视为 Xcode 的角色。仅 <b>5%</b> 认为 Xcode 基本承担完整开发工作流；这可能说明 Xcode 已不是多数受访者开发 Apple 应用的唯一选择，搭配 Xcode 之外的工具完成全流程已成为主流工作方式。','<b>Build / Compile (61%)</b>, <b>Simulator (58%)</b>, <b>Debug (46%)</b>, and <b>Signing / Provisioning (30%)</b> are the key toolchain responsibilities respondents most often assign to Xcode. In contrast, <b>AI-assisted coding (10%)</b> and <b>testing (5%)</b> are rarely attributed to it. Only <b>5%</b> say Xcode essentially covers their complete workflow. This may suggest that Xcode is no longer the only choice for most respondents building Apple apps, and that pairing it with tools outside Xcode has become the mainstream way to complete the full workflow.'));
@@ -505,7 +506,7 @@ function setupVoiceLibrary(){const library=document.querySelector('[data-voice-l
 function render(){
   document.documentElement.lang=mode==='en'?'en':'zh-CN';
   document.title=mode==='en'?'Xcode × AI Global Developer Survey':'Xcode × AI 编程全球开发者调研';
-  document.querySelector('#hero').innerHTML=`<div class="hero-bar"><img class="hero-logo" src="assets/swiftgg-logo-mono.png" alt="SwiftGG"><div class="lang-toggle" role="group" aria-label="Language display"><button type="button" data-language="zh" aria-pressed="false">中文</button><button type="button" data-language="en" aria-pressed="false">English</button></div></div><div class="hero-inner"><span class="hero-eyebrow">DEVELOPER RESEARCH 2026</span><h1>${text(bi('<span class="title-line">AI 时代，</span><span class="title-line"><span class="latin-word">Apple</span> 生态开发者</span><span class="title-line">是这样看待开发工具的！</span>','<span class="title-line">In the Age of AI,</span><span class="title-line">How <span class="latin-word">Apple</span> Developers</span><span class="title-line">Think About AI &amp; Dev Tools!</span>'))}</h1><p class="hero-intro">${text(heroIntro)}</p><div class="metric-row"><div class="metric"><b>100</b><span>${text(bi('位受邀开发者','invited developers'))}</span></div><div class="metric"><b>10</b><span>${text(bi('个国家和地区','countries and regions'))}</span></div><div class="metric"><b>81%</b><span>${text(bi('至少 4 年 Apple 平台经验','with 4+ years on Apple platforms'))}</span></div><div class="metric"><b>95%</b><span>${text(bi('至少几乎每天使用 AI','use AI at least almost daily'))}</span></div></div></div>`;
+  document.querySelector('#hero').innerHTML=`<div class="hero-bar"><img class="hero-logo" src="assets/swiftgg-logo-mono.png" alt="SwiftGG"><div class="lang-toggle" role="group" aria-label="Language display"><button type="button" data-language="zh" aria-pressed="false">中文</button><button type="button" data-language="en" aria-pressed="false">English</button></div></div><div class="hero-inner"><span class="hero-eyebrow">DEVELOPER RESEARCH 2026</span><h1>${text(bi('<span class="title-line">AI 时代，Apple 开发者</span><span class="title-line">怎么看开发工具？</span>','<span class="title-line">How Apple Developers See</span><span class="title-line">Dev Tools in the AI Era</span>'))}</h1><p class="hero-intro">${text(heroIntro)}</p><div class="metric-row"><div class="metric"><b>100</b><span>${text(bi('位受邀开发者','invited developers'))}</span></div><div class="metric"><b>10</b><span>${text(bi('个国家和地区','countries and regions'))}</span></div><div class="metric"><b>81%</b><span>${text(bi('至少 4 年 Apple 平台经验','with 4+ years on Apple platforms'))}</span></div><div class="metric"><b>95%</b><span>${text(bi('至少几乎每天使用 AI','use AI at least almost daily'))}</span></div></div></div>`;
   document.querySelectorAll('[data-language]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.language===mode)));
   let html='';
   html+=section('profile',bi('Part 1 · 受邀开发者画像','Part 1 · Who We Surveyed'),bi('我们邀请了哪些开发者参与调研？','Which developers did we invite to participate?'),[
@@ -516,7 +517,7 @@ function render(){
   `<div class="grid-2">${experiencePie(bi('从事软件开发多少年？','Years in software development'),profile.softwareExperience)}${experiencePie(bi('从事 Apple 平台开发多少年？','Years developing for Apple platforms'),profile.appleExperience)}</div>`+
   card({cls:'identity-wrap',title:bi('受访开发者有哪些身份标签？','What identity labels describe respondents?'),type:'multiple',body:identityProfile(profile.roles)})+
   card({cls:'pie-card',title:bi('受访者所在应用开发团队规模','Application development team size at respondents’ companies'),type:'single',body:scalePie(profile.scale)}));
-  html+=section('global',bi('Part 2 · AI 浪潮下，开发者们如是说','Part 2 · What Developers Say in the Age of AI'),bi('AI 已成为开发工作的核心方式','AI Has Become a Core Way of Working'),[
+  html+=section('global',bi('Part 2 · AI 浪潮下的开发者','Part 2 · Developers in the Age of AI'),bi('AI 已成为开发工作的核心方式','AI Has Become a Core Way of Working'),[
     bi(`在 100 位受访开发者中，${mk('95%')} 表示至少几乎每天使用 AI，${mk('78%')} 表示每天高频使用。AI 已从辅助能力延伸至开发流程的关键环节，成为${mk('核心工作方式')}之一。`,`Among 100 surveyed developers, ${mk('95%')} report using AI at least almost every day and ${mk('78%')} report high-frequency daily use. AI has moved beyond an assistive capability into key stages of the development process, becoming a ${mk('core way of working')}.`),
     bi(`与此同时，开发者对 Xcode 单一入口的${mk('依赖正在减弱')}，对 AI 生成代码的${mk('信任与采纳程度持续提升')}，手写代码不再是唯一的实现路径。这些变化表明，AI 正在${mk('重塑')}开发者长期形成的工作习惯与软件开发模式。`,`At the same time, developers are ${mk('becoming less dependent on Xcode')} as a single entry point, while ${mk('trust in and adoption of AI-generated code continue to rise')}. Handwritten code is no longer the only path to implementation—signaling a broader ${mk('reshaping')} of established development habits and software practices.`)
   ],`${aiLifecycle()}<div class="grid-5-7">${workflowPodium()}${frequencyMatrix()}</div>${selectionRanking()}<div class="grid-4-8">${codeLocation()}${xcodeRoles()}</div>`);
@@ -535,7 +536,7 @@ function render(){
   html+=respondentWall();
   document.querySelector('#report').innerHTML=html;
   applyDataStyles();try{renderProfileMap()}catch(error){console.warn(error)}setupRespondentWall();setupPies();setupPart2Interactions();setupChinaUsageRankings();setupPriorityDeck();setupVoiceLibrary();
-  const chapters=[['chapter-1',bi('01 受邀开发者画像','01 Who We Surveyed')],['chapter-2',bi('02 AI 浪潮下，开发者们如是说','02 What Developers Say in the Age of AI')],['chapter-3',bi('03 AI 编程的共识与分化','03 Consensus and Divergence in AI Coding')],['chapter-4',bi('04 AI 时代下的 Xcode','04 Xcode in the AI Era')],['chapter-5',bi('05 写给 Xcode 团队','05 To Xcode Team')]];
+  const chapters=[['chapter-1',bi('01 受邀开发者画像','01 Who We Surveyed')],['chapter-2',bi('02 AI 浪潮下的开发者','02 Developers & AI')],['chapter-3',bi('03 AI 编程的共识与分化','03 Consensus & Divergence')],['chapter-4',bi('04 AI 时代下的 Xcode','04 Xcode in the AI Era')],['chapter-5',bi('05 写给 Xcode 团队','05 To the Xcode Team')]];
   document.querySelector('.chapter-nav').innerHTML=chapters.map(([id,label],index)=>{const chapterLabel=text(label);return `<a href="#${id}" data-target="${id}" data-part="${index+1}" title="${chapterLabel.slice(2).trimStart()}"><span class="nav-number">${chapterLabel.slice(0,2)}</span><span class="nav-label">${chapterLabel.slice(2).trimStart()}</span></a>`}).join('');
   updateReadingState();
 }
