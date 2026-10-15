@@ -352,7 +352,7 @@ function card({cls='',id='',eyebrow='',title,type,insight='',insightLabel,body,f
 const note=html=>`<p class="note"><strong>${text(bi('注意：','Note: '))}</strong>${html}</p>`;
 
 /* ---- Pie charts (Part 1) ---- */
-const blueRamp=['#1e3a8a','#1d4ed8','#3b82f6','#7aa7f8','#b4cdfb','#dbe7fd'];
+const blueRamp=['#bfdbfe','#93c5fd','#60a5fa','#3b82f6','#2563eb','#1d4ed8'];
 function pieChart(items,ramp){
   const total=items.reduce((a,[,v])=>a+v,0);const R=96,C=100;let a0=-Math.PI/2;
   const pt=(a,r=R)=>[C+r*Math.cos(a),C+r*Math.sin(a)];
@@ -400,7 +400,7 @@ function setupChinaUsageRankings(){
 /* ---- Part 1 ---- */
 const profileCard=(title,type,body,cls='')=>card({cls,title,type,body});
 function experiencePie(title,items){return profileCard(title,'single',pieChart(items,blueRamp),'pie-card')}
-function scalePie(items){return pieChart(items,['#1e3a8a','#2563eb','#7aa7f8','#c3d6fb'])}
+function scalePie(items){return pieChart(items,['#bfdbfe','#60a5fa','#3b82f6','#1d4ed8'])}
 
 /* ---- Part 2 ---- */
 function aiLifecycle(){
@@ -420,7 +420,7 @@ function workflowPodium(){
   const insight=text(bi('<b>12%</b> 受访者坚持以自己为主导来完成开发与验证，主要采用讨论、补全、手动添加代码等方式；<b>1%</b> 的开发者基本不使用 AI 编程。','<b>12%</b> of respondents remain developer-led for development and validation, primarily using discussion, completion, and manually adding code; <b>1%</b> of developers hardly use AI coding.'));
   const body=`<div class="podium">${podium.map(({item,rank})=>`<div class="pod place-${rank}"><div class="pod-stage"><div class="pod-bar" style="--h:${Math.round(item.value/max*190)}px"><b>${item.value}%</b><span>${rank}</span></div></div><p>${text(item.label)}</p></div>`).join('')}</div>`;
   return card({cls:'workflow',eyebrow:'Q13',title:bi('开发者与 AI 的合作方式','How Developers Collaborate with AI'),type:'single',insight,body})}
-const frequencyColors=['#d4d4d8','#a5e3ee','#5bc3d9','#1d94b8','#0b5575'];
+const frequencyColors=['#52525b','#155e75','#0e7490','#22b8d9','#a5f3fc'];
 function frequencyMatrix(){
   const order=part2.frequency.map((item,index)=>({item,index})).reverse();let offset=0;
   const cells=order.flatMap(({item,index})=>Array.from({length:item.value},()=>`<i class="f-cell" data-frequency-index="${index}" style="--c:${frequencyColors[index]};--o:${offset++}"></i>`)).join('');
@@ -506,7 +506,7 @@ function render(){
   document.documentElement.lang=mode==='en'?'en':'zh-CN';
   document.title=mode==='en'?'Xcode × AI Global Developer Survey':'Xcode × AI 编程全球开发者调研';
   document.querySelectorAll('[data-language]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.language===mode)));
-  document.querySelector('#hero').innerHTML=`<div class="hero-inner"><span class="hero-eyebrow">DEVELOPER RESEARCH 2026</span><h1>${text(bi('<span class="title-line">AI 时代，</span><span class="title-line"><span class="latin-word">Apple</span> 生态开发者</span><span class="title-line">是这样看待开发工具的！</span>','<span class="title-line">In the Age of AI,</span><span class="title-line">How <span class="latin-word">Apple</span> Developers</span><span class="title-line">Think About AI &amp; Dev Tools!</span>'))}</h1><p class="hero-intro">${text(heroIntro)}</p><div class="metric-row"><div class="metric"><b>100</b><span>${text(bi('位受邀开发者','invited developers'))}</span></div><div class="metric"><b>10</b><span>${text(bi('个国家和地区','countries and regions'))}</span></div><div class="metric"><b>81%</b><span>${text(bi('至少 4 年 Apple 平台经验','with 4+ years on Apple platforms'))}</span></div><div class="metric"><b>95%</b><span>${text(bi('至少几乎每天使用 AI','use AI at least almost daily'))}</span></div></div></div>`;
+  document.querySelector('#hero').innerHTML=`<div class="hero-inner"><img class="hero-logo" src="assets/swiftgg-logo-mono.png" alt="SwiftGG"><span class="hero-eyebrow">DEVELOPER RESEARCH 2026</span><h1>${text(bi('<span class="title-line">AI 时代，</span><span class="title-line"><span class="latin-word">Apple</span> 生态开发者</span><span class="title-line">是这样看待开发工具的！</span>','<span class="title-line">In the Age of AI,</span><span class="title-line">How <span class="latin-word">Apple</span> Developers</span><span class="title-line">Think About AI &amp; Dev Tools!</span>'))}</h1><p class="hero-intro">${text(heroIntro)}</p><div class="metric-row"><div class="metric"><b>100</b><span>${text(bi('位受邀开发者','invited developers'))}</span></div><div class="metric"><b>10</b><span>${text(bi('个国家和地区','countries and regions'))}</span></div><div class="metric"><b>81%</b><span>${text(bi('至少 4 年 Apple 平台经验','with 4+ years on Apple platforms'))}</span></div><div class="metric"><b>95%</b><span>${text(bi('至少几乎每天使用 AI','use AI at least almost daily'))}</span></div></div></div>`;
   let html='';
   html+=section('profile',bi('Part 1 · 受邀开发者画像','Part 1 · Who We Surveyed'),bi('我们邀请了哪些开发者参与调研？','Which developers did we invite to participate?'),[
     bi(`本次调研面向来自 ${mk('10 多个国家和地区')}的${mk('近 100 位')}受邀开发者。`,`This survey invited ${mk('nearly 100 developers')} from ${mk('more than 10 countries and regions')}.`),
@@ -536,7 +536,7 @@ function render(){
   document.querySelector('#report').innerHTML=html;
   applyDataStyles();try{renderProfileMap()}catch(error){console.warn(error)}setupRespondentWall();setupPies();setupPart2Interactions();setupChinaUsageRankings();setupPriorityDeck();setupVoiceLibrary();
   const chapters=[['chapter-1',bi('01 受邀开发者画像','01 Who We Surveyed')],['chapter-2',bi('02 AI 浪潮下，开发者们如是说','02 What Developers Say in the Age of AI')],['chapter-3',bi('03 AI 编程的共识与分化','03 Consensus and Divergence in AI Coding')],['chapter-4',bi('04 AI 时代下的 Xcode','04 Xcode in the AI Era')],['chapter-5',bi('05 写给 Xcode 团队','05 To Xcode Team')]];
-  document.querySelector('.chapter-nav').innerHTML=chapters.map(([id,label],index)=>{const chapterLabel=text(label);return `<a href="#${id}" data-target="${id}" data-part="${index+1}"><span class="nav-number">${chapterLabel.slice(0,2)}</span><span class="nav-label">${chapterLabel.slice(2).trimStart()}</span></a>`}).join('');
+  document.querySelector('.chapter-nav').innerHTML=chapters.map(([id,label],index)=>{const chapterLabel=text(label);return `<a href="#${id}" data-target="${id}" data-part="${index+1}" title="${chapterLabel.slice(2).trimStart()}"><span class="nav-number">${chapterLabel.slice(0,2)}</span><span class="nav-label">${chapterLabel.slice(2).trimStart()}</span></a>`}).join('');
   updateReadingState();
 }
 document.querySelectorAll('[data-language]').forEach(button=>button.addEventListener('click',()=>{mode=button.dataset.language;localStorage.setItem(modeKey,mode);render()}));
