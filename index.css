@@ -148,7 +148,7 @@ html:not(.is-authenticated) .app { visibility: hidden; }
 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
 .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
 .grid-5-7 { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 32px; }
-.grid-4-8 { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 32px; }
+.grid-4-8 { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 32px; }
 .grid-5-7 > .card, .grid-4-8 > .card, .grid-2 > .card { display: flex; flex-direction: column; }
 .grid-5-7 > .card .card-body, .grid-4-8 > .card .card-body, .grid-2 > .card .card-body { flex: 1; }
 .stat { padding: 36px; border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--card); }
@@ -280,8 +280,8 @@ button.lc-row .lc-chev { background: var(--accent-soft); border: 1px solid var(-
 .role-row .sel-label strong { font-size: 15px; }
 .loc-stack { display: grid; gap: 14px; }
 .loc-tile { position: relative; padding: 22px 24px; border: 1px solid var(--border); border-radius: var(--radius); }
-.loc-tile.is-primary { padding-right: 96px; border-color: var(--accent-line); background: var(--accent-soft); }
-.loc-tile > img { position: absolute; top: 20px; right: 20px; width: 56px; height: 56px; object-fit: contain; }
+.loc-tile.is-primary { padding-right: 128px; border-color: var(--accent-line); background: var(--accent-soft); }
+.loc-tile > img { position: absolute; top: 50%; right: 20px; width: 88px; height: 88px; transform: translateY(-50%); object-fit: contain; }
 .loc-share { display: block; font-size: 38px; font-weight: 600; letter-spacing: 0; line-height: 1.15; }
 .loc-tile.is-primary .loc-share { color: var(--accent-ink); }
 .loc-tile p { margin-top: 8px; color: var(--subtle); font-size: 14px; }
