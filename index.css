@@ -95,22 +95,22 @@ html:not(.is-authenticated) .app { visibility: hidden; }
 
 /* Hero — monochrome, textured, no sidebar */
 .hero { position: relative; display: flex; flex-direction: column; height: 100vh; height: 100svh; min-height: 560px; border-bottom: 1px solid var(--border); overflow: hidden; }
-.hero::before { position: absolute; inset: 0; content: ""; pointer-events: none; background-image: linear-gradient(rgb(255 255 255 / .045) 1px, transparent 1px), linear-gradient(90deg, rgb(255 255 255 / .045) 1px, transparent 1px); background-size: 72px 72px; -webkit-mask-image: radial-gradient(70% 70% at 50% 40%, #000 20%, transparent 78%); mask-image: radial-gradient(70% 70% at 50% 40%, #000 20%, transparent 78%); }
+.hero::before { position: absolute; inset: 0; content: ""; pointer-events: none; background-image: linear-gradient(rgb(255 255 255 / .045) 1px, transparent 1px), linear-gradient(90deg, rgb(255 255 255 / .045) 1px, transparent 1px); background-size: 72px 72px; background-position: calc(50% + 36px) 100%; -webkit-mask-image: radial-gradient(70% 70% at 50% 40%, #000 20%, transparent 78%); mask-image: radial-gradient(70% 70% at 50% 40%, #000 20%, transparent 78%); }
 .hero::after { position: absolute; inset: -20% 10% auto; height: 70%; content: ""; pointer-events: none; background: radial-gradient(closest-side, rgb(255 255 255 / .075), transparent); }
 .hero-bar { position: relative; z-index: 1; display: flex; align-items: center; justify-content: space-between; padding: 32px 48px; }
 .hero-logo { display: block; width: auto; height: 28px; }
 .hero-bar .lang-toggle { width: 160px; }
-.hero-inner { position: relative; z-index: 1; display: flex; flex: 1; flex-direction: column; justify-content: center; width: 100%; max-width: 1240px; margin: 0 auto; padding: 8px 48px clamp(24px, 6vh, 64px); text-align: center; }
+.hero-inner { position: relative; z-index: 1; display: flex; flex: 1; flex-direction: column; justify-content: center; width: 100%; margin: 0 auto; padding: 8px 24px 72px; text-align: center; }
 .hero-eyebrow { display: block; margin-bottom: clamp(20px, 4vh, 32px); color: var(--muted-foreground); font-size: 12px; font-weight: 500; letter-spacing: .28em; }
 .hero h1 { font-size: clamp(34px, min(5.2vw, 8.6vh), 88px); text-wrap: balance; font-weight: 600; letter-spacing: 0; line-height: 1.12; }
 .title-line { display: block; }
 .latin-word { color: inherit; }
 .hero-intro { max-width: 38em; margin: clamp(20px, 4vh, 40px) auto 0; color: var(--muted-foreground); font-size: 19px; line-height: 1.8; }
-.metric-row { display: grid; grid-template-columns: repeat(4, 1fr); margin-top: clamp(36px, 9vh, 96px); border-top: 1px solid var(--border); }
-.metric { padding: 28px 20px 0; text-align: left; }
+.metric-row { display: grid; grid-template-columns: repeat(4, 1fr); width: 1152px; max-width: 100%; height: 144px; margin: clamp(24px, 6vh, 72px) auto 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--background); }
+.metric { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0 12px; text-align: center; }
 .metric + .metric { border-left: 1px solid var(--border); }
-.metric b { display: block; color: var(--foreground); font-size: clamp(36px, 4vw, 56px); font-weight: 500; letter-spacing: 0; line-height: 1; font-variant-numeric: tabular-nums; }
-.metric span { display: block; margin-top: 12px; color: var(--muted-foreground); font-size: 13.5px; }
+.metric b { display: block; color: var(--foreground); font-size: clamp(34px, 3.6vw, 52px); font-weight: 500; letter-spacing: 0; line-height: 1; font-variant-numeric: tabular-nums; }
+.metric span { display: block; margin-top: 10px; color: var(--muted-foreground); font-size: 13.5px; }
 
 /* Chapter head — centered, soft per-chapter glow */
 .section { position: relative; border-bottom: 1px solid var(--border); overflow: hidden; }
@@ -453,8 +453,10 @@ html[lang="en"] .respondent-wall-copy { width: min(760px, 94%); }
 @media (max-width: 900px) {
   .hero-bar { padding: 20px; }
   .hero-inner { padding: 24px 20px 56px; }
-  .metric-row { grid-template-columns: 1fr 1fr; }
+  .metric-row { grid-template-columns: 1fr 1fr; height: auto; }
+  .metric { padding: 20px 12px; }
   .metric:nth-child(3) { border-left: 0; }
+  .metric:nth-child(n+3) { border-top: 1px solid var(--border); }
   .section-inner { padding: 80px 16px 88px; }
   .part-head { margin-bottom: 48px; }
   .metric-row { grid-template-columns: 1fr 1fr; }
