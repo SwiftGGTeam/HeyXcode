@@ -5,13 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Xcode × AI 编程全球开发者调研报告">
   <title>Xcode × AI 编程全球开发者调研</title>
-  <link rel="stylesheet" href="index.css?v=31">
+  <link rel="stylesheet" href="index.css?v=50">
   <link rel="stylesheet" href="vendor/svgmap/svg-map.min.css">
 </head>
 <body>
   <section class="auth-gate">
-    <div class="auth-gate-orb auth-gate-orb-one" aria-hidden="true"></div>
-    <div class="auth-gate-orb auth-gate-orb-two" aria-hidden="true"></div>
     <form class="auth-card" id="auth-form" novalidate>
       <p class="auth-eyebrow">SWIFTGG · DEVELOPER RESEARCH 2026</p>
       <label class="auth-label" for="auth-password">
@@ -26,24 +24,27 @@
       </button>
     </form>
   </section>
-  <main id="top">
-    <header class="liquid-nav-shell">
-      <a class="brand-pod" href="#top" aria-label="Back to top">
-        <span class="brand-mark"><img src="assets/swiftgg-logo-mono.png" alt=""></span>
+  <div class="app" id="top">
+    <aside class="sidebar">
+      <a class="brand" href="#top" aria-label="Back to top">
+        <img src="assets/swiftgg-logo-mono.png" alt="SwiftGG">
+        <span>Xcode × AI<small>Developer Research 2026</small></span>
       </a>
       <nav class="chapter-nav" aria-label="Report chapters"></nav>
-      <div class="poster-controls" role="group" aria-label="Language display">
-        <button type="button" data-language="zh" aria-pressed="true">中文</button>
-        <button type="button" data-language="en" aria-pressed="false">English</button>
+      <div class="sidebar-foot">
+        <div class="reading-progress" aria-hidden="true"><i></i></div>
+        <div class="lang-toggle" role="group" aria-label="Language display">
+          <button type="button" data-language="zh" aria-pressed="true">中文</button>
+          <button type="button" data-language="en" aria-pressed="false">English</button>
+        </div>
       </div>
-    </header>
-    <section class="hero" id="hero"></section>
-    <div id="report"></div>
-  </main>
-  <script src="hero-shader.js?v=2"></script>
+    </aside>
+    <main class="content">
+      <section class="hero" id="hero"></section>
+      <div id="report"></div>
+    </main>
+  </div>
   <script src="vendor/svgmap/svg-map.umd.min.js"></script>
-  <script src="index.js?v=41"></script>
-  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-  <script type="module" src="liquid-nav.js?v=5"></script>
+  <script src="index.js?v=50"></script>
 </body>
 </html>
