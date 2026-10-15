@@ -364,14 +364,14 @@ button.lc-row .lc-chev { background: var(--accent-soft); border: 1px solid var(-
 .leader-rank { color: var(--accent); font-size: 26px; font-weight: 600; letter-spacing: 0; }
 .leader strong { font-size: 16px; font-weight: 500; line-height: 1.5; }
 .leader b { color: var(--accent-ink); font-size: 32px; font-weight: 600; letter-spacing: 0; font-variant-numeric: tabular-nums; }
-.deck { position: relative; height: 200px; margin-right: 20px; margin-bottom: 20px; }
+.deck { position: relative; height: 220px; margin-right: 20px; margin-bottom: 20px; }
 .deck-card { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: space-between; padding: 22px 24px; border: 1px solid var(--accent-line); border-radius: var(--radius); color: var(--accent-ink); background: var(--card); transform: translate(calc(var(--pos) * 10px), calc(var(--pos) * 10px)); z-index: calc(20 - var(--pos)); transition: transform .35s ease, opacity .35s ease; cursor: default; }
 .deck-card.is-top { cursor: pointer; background: color-mix(in srgb, var(--accent) 14%, var(--card)); border-color: var(--accent); }
 .deck-card[data-pos="1"] { opacity: .75; }
 .deck-card[data-pos="2"] { opacity: .45; }
 .deck-card[data-pos="3"] { opacity: 0; pointer-events: none; }
 .deck-rate { font-size: 60px; font-weight: 600; letter-spacing: 0; line-height: 1; }
-.deck-title { color: var(--foreground); font-size: 17px; line-height: 1.55; }
+.deck-title { color: var(--foreground); font-size: 22px; font-weight: 500; line-height: 1.4; }
 .deck-pager { margin-top: 28px; }
 
 /* Part 5 · orange — voices */
