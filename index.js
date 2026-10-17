@@ -461,9 +461,11 @@ function treemapTone(t){
   const s=t>=.45?52:62;
   return `--bg:hsl(262 ${s}% ${bgL}%);--fg:hsl(262 ${t>=.45?95:60}% ${fgL}%)`}
 function xcodeQuestionTreemap(report){
-  const W=100,H=56;const max=Math.max(...report.items.map(i=>i[1]));/* Tiny shares get a minimum layout weight so their tile can still hold its label. */
-  const weight=v=>Math.max(v,4.5);const sum=report.items.reduce((a,i)=>a+weight(i[1]),0);
-  const laid=squarify(report.items.map(([label,value])=>({label,value,a:weight(value)/sum*W*H})),0,0,W,H);
+  const W=100,H=56;const max=Math.max(...report.items.map(i=>i[1]));/* Shares under 7% sit in a full-width strip along the bottom so their labels have room. */
+  const main=report.items.filter(i=>i[1]>=7),tail=report.items.filter(i=>i[1]<7);const SH=tail.length?6:0;
+  const sum=main.reduce((a,i)=>a+i[1],0),tailSum=tail.reduce((a,i)=>a+i[1],0);
+  const laid=squarify(main.map(([label,value])=>({label,value,a:value/sum*W*(H-SH)})),0,0,W,H-SH);
+  let tx=0;tail.forEach(([label,value])=>{const w=value/tailSum*W;laid.push({label,value,x:tx,y:H-SH,w,h:SH});tx+=w});
   const tiles=laid.map(t=>{const size=t.value>=30?'is-l':t.value>=15?'is-m':t.value>=4?'is-s':'is-xs';const row=t.w/t.h>3?' is-row':'';return `<article class="tile ${size}${row}" role="listitem" tabindex="0" title="${text(t.label)}: ${t.value}%" aria-label="${text(t.label)}: ${t.value}%" style="left:${t.x}%;top:${t.y/H*100}%;width:${t.w}%;height:${t.h/H*100}%;${treemapTone(t.value/max)}"><strong>${t.value}%</strong><p>${text(t.label)}</p></article>`}).join('');
   return card({cls:'q-card is-treemap',id:report.id,title:report.title,type:report.questionType||'multiple',insight:stripPrefix(text(report.insight)),body:`<div class="treemap" role="list">${tiles}</div>`,tools:note(text(bi('列表按选择比例从高到低排序，颜色越深占比越高；每位受访者最多选择 3 项，选项可重叠，因此比例不相加为 100%。','Ranked by selection share, with darker rows indicating higher shares. Each respondent selected up to three capabilities; choices overlap, so percentages do not sum to 100%.'))),foot:note(text(report.note))})}
 function prioritySpotlight(){
