@@ -1,29 +1,3 @@
-const authKey='xcode-ai-report-access';
-const reportPassword='heyxcode';
-const authForm=document.querySelector('#auth-form');
-const authInput=document.querySelector('#auth-password');
-const authError=document.querySelector('#auth-error');
-
-function unlockReport(){
-  try { sessionStorage.setItem(authKey,'granted'); } catch {}
-  document.documentElement.classList.add('is-authenticated');
-}
-
-try {
-  if(sessionStorage.getItem(authKey)==='granted') document.documentElement.classList.add('is-authenticated');
-} catch {}
-
-authForm?.addEventListener('submit',event=>{
-  event.preventDefault();
-  if(authInput.value===reportPassword){
-    authError.textContent='';
-    unlockReport();
-    return;
-  }
-  authError.textContent='密码不正确，请重试。 / Incorrect password. Please try again.';
-  authInput.select();
-});
-
 const modeKey='xcode-ai-report-language';
 let mode=localStorage.getItem(modeKey)==='en'?'en':'zh';
 let heroShader;
@@ -519,7 +493,7 @@ function siteFooter(){
   const lock='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M7 11V7a5 5 0 0 1 10 0v4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>';
   const privacy=`<a href="https://swiftgg.team/privacy" target="_blank" rel="noopener noreferrer">${text(bi('隐私政策','Privacy Policy'))}</a>`;
   const statement=text(bi('本报告中的所有数据均已脱敏。问卷为匿名填写，我们不收集姓名、邮箱、手机号等任何可识别个人身份的信息，结果仅以匿名汇总的形式发布，原始回答不会被出售或提供给任何第三方。','All data in this report has been de-identified. The survey was anonymous: we do not collect names, email addresses, phone numbers or any other personally identifying information, results are published only as anonymous aggregates, and raw responses are never sold or provided to any third party.'));
-  const credits=[[bi('问卷方法与整理分析','Survey method & analysis'),'Siqi','https://x.com/swiftsiqi'],[bi('网站开发','Web development'),'Kim','https://jin.cr'],[bi('设计','Design'),'Amber','']].map(([role,name,url])=>`<li><span>${text(role)}</span>${url?`<a href="${url}" target="_blank" rel="noopener noreferrer">${name}</a>`:`<b>${name}</b>`}</li>`).join('');
+  const credits=[[bi('问卷方法与整理分析','Survey method & analysis'),'Siqi','https://x.com/swiftsiqi'],[bi('网站开发','Web development'),'Kim','https://jin.cr'],[bi('设计','Design'),'Amber','https://xhslink.cn/o/7foa1JrkusK']].map(([role,name,url])=>`<li><span>${text(role)}</span>${url?`<a href="${url}" target="_blank" rel="noopener noreferrer">${name}</a>`:`<b>${name}</b>`}</li>`).join('');
   const links=[['x','X','https://x.com/TheSwiftGGTeam'],['rednote',text(bi('小红书','RedNote')),'https://www.xiaohongshu.com/user/profile/6627df6e000000000700607b','<span class="social-text">小红书</span>'],['github','GitHub','https://github.com/SwiftGGTeam'],['email','hello@swiftgg.team','mailto:hello@swiftgg.team']].map(([icon,label,url,glyph])=>`<a class="social" href="${url}"${url.startsWith('mailto:')?'':' target="_blank" rel="noopener noreferrer"'} aria-label="${label}" title="${label}">${glyph||socialIcons[icon]}</a>`).join('');
   const wechat=`<span class="social-qr"><button class="social" type="button" aria-label="${text(bi('微信公众号','WeChat Official Account'))}" aria-expanded="false">${socialIcons.wechat}</button><span class="qr-pop" role="tooltip"><img src="assets/wechat-qr.png" alt="${text(bi('SwiftGG 公众号二维码','SwiftGG WeChat QR code'))}" loading="lazy"><small>${text(bi('微信扫码关注 SwiftGG','Scan with WeChat'))}</small></span></span>`;
   return `<footer class="site-footer"><div class="site-footer-inner"><div class="footer-top"><ul class="footer-credits">${credits}</ul><nav class="footer-socials" aria-label="${text(bi('SwiftGG 社交媒体','SwiftGG on social media'))}">${wechat}${links}</nav></div><div class="footer-privacy"><span class="footer-icon">${lock}</span><p>${statement} ${text(bi('详见','See our'))} ${privacy}${text(bi('。','.'))}</p></div></div></footer>`}
