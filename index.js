@@ -7,7 +7,7 @@ const bi=(zh,en)=>({zh,en});
 const text=v=>mode==='en'?v.en:v.zh;
 const insightPrefix=()=>`<b class="insight-prefix">${text(bi('洞察：','Insight:'))}</b>`;
 const labelTranslations={
-  '中国大陆':'Mainland China','中国大陆（含香港、澳门、台湾）':'Mainland China (including Hong Kong, Macao & Taiwan)','欧洲':'Europe','日本':'Japan','美国':'United States','东南亚':'Southeast Asia','韩国':'South Korea','中国香港 / 澳门 / 台湾':'Hong Kong, Macao & Taiwan','印度及南亚':'India & South Asia','加拿大':'Canada','澳大利亚 / 新西兰':'Australia & New Zealand',
+  '中国大陆':'Mainland China','大中华区（含港澳台）':'Greater China (incl. Hong Kong, Macao & Taiwan)','欧洲':'Europe','日本':'Japan','美国':'United States','东南亚':'Southeast Asia','韩国':'South Korea','中国香港 / 澳门 / 台湾':'Hong Kong, Macao & Taiwan','印度及南亚':'India & South Asia','加拿大':'Canada','澳大利亚 / 新西兰':'Australia & New Zealand',
   '不满 1 年':'Under 1 year','1–3 年':'1–3 years','4–6 年':'4–6 years','7–10 年':'7–10 years','10–15 年':'10–15 years','15 年以上':'15+ years',
   '独立开发者 / Solo Developer':'Independent / solo developer','小型科技 / 初创公司开发者':'Small technology / startup company developer','大型科技 / 互联网公司开发者':'Large technology / internet company developer','中型软件 / 互联网公司开发者':'Medium software / internet company developer','教师 / 研究人员':'Educator / researcher','目前不以开发为主要职业，但持续进行软件开发':'Develops software outside a primary development role','外包 / 咨询 / Agency 开发者':'Outsourcing / consulting / agency developer','非科技行业的大型企业开发者':'Large non-technology enterprise developer','学生':'Student',
   '个人项目 / Solo Project':'Solo project','小型团队（约 2–5 人）':'Small team (about 2–5 people)','中型团队（约 6–100 人）':'Medium team (about 6–100 people)','大型团队（100+ 人、多团队协作或大型代码库）':'Large team (100+ people, multiple teams, or a large codebase)',
@@ -24,7 +24,7 @@ const labelTranslations={
 };
 const heroIntro=bi('SwiftGG 邀请了全球 100 位资深 Apple 生态开发者，了解他们如何使用 Xcode、如何在应用开发中使用 AI，以及他们对新时代下软件开发工具与工作流的期待。','SwiftGG invited 100 experienced Apple ecosystem developers to understand how they use Xcode, how they use AI in app development, and what they expect from software development tools and workflows in the new era.');
 const profile={
-  region:[['中国大陆（含香港、澳门、台湾）',60],['欧洲',14],['日本',11],['美国',7],['东南亚',3],['韩国',2],['印度及南亚',1],['加拿大',1],['澳大利亚 / 新西兰',1]],
+  region:[['大中华区（含港澳台）',60],['欧洲',14],['日本',11],['美国',7],['东南亚',3],['韩国',2],['印度及南亚',1],['加拿大',1],['澳大利亚 / 新西兰',1]],
   softwareExperience:[['15 年以上',21],['10–15 年',30],['7–10 年',26],['4–6 年',18],['1–3 年',5],['不满 1 年',0]],
   appleExperience:[['15 年以上',6],['10–15 年',29],['7–10 年',26],['4–6 年',20],['1–3 年',17],['不满 1 年',2]],
   roles:[['独立开发者 / Solo Developer',52],['小型科技 / 初创公司开发者',31],['大型科技 / 互联网公司开发者',21],['中型软件 / 互联网公司开发者',9],['教师 / 研究人员',8],['目前不以开发为主要职业，但持续进行软件开发',7],['外包 / 咨询 / Agency 开发者',4],['非科技行业的大型企业开发者',2],['学生',1]],
@@ -349,7 +349,7 @@ function setupPies(){document.querySelectorAll('.pie-wrap').forEach(wrap=>{const
 
 /* ---- Part 3 usage rankings ---- */
 const segLabel=(long,short)=>`<span class="seg-long">${text(long)}</span><span class="seg-short">${text(short)}</span>`;
-const usageSegment=()=>`<div class="seg" role="group" aria-label="${text(bi('按地区查看','Filter by region'))}"><button type="button" class="is-active" data-usage-group="all" aria-pressed="true">${text(bi('全部','All'))}<small>100</small></button><button type="button" data-usage-group="china" aria-pressed="false"><i class="dot is-china"></i>${segLabel(bi('中国大陆及港澳台地区开发者','Mainland China, HK, MO & TW'),bi('中国','China'))}<small>60</small></button><button type="button" data-usage-group="overseas" aria-pressed="false"><i class="dot is-overseas"></i>${segLabel(bi('海外地区开发者','Overseas developers'),bi('海外','Overseas'))}<small>40</small></button></div>`;
+const usageSegment=()=>`<div class="seg" role="group" aria-label="${text(bi('按地区查看','Filter by region'))}"><button type="button" class="is-active" data-usage-group="all" aria-pressed="true">${text(bi('全部','All'))}<small>100</small></button><button type="button" data-usage-group="china" aria-pressed="false"><i class="dot is-china"></i>${segLabel(bi('大中华区（含港澳台）开发者','Greater China (incl. HK, MO & TW)'),bi('中国','China'))}<small>60</small></button><button type="button" data-usage-group="overseas" aria-pressed="false"><i class="dot is-overseas"></i>${segLabel(bi('海外地区开发者','Overseas developers'),bi('海外','Overseas'))}<small>40</small></button></div>`;
 const usageRows=items=>items.map(([label,chinaRate,overseasRate],index)=>`<div class="u-row${index>4?' is-extra':''}"><h4>${text(label)}</h4><div class="u-bar is-china" style="--rate:${chinaRate}%"><i></i><b>${chinaRate.toFixed(1)}%</b></div><div class="u-bar is-overseas" style="--rate:${overseasRate}%"><i></i><b>${overseasRate.toFixed(1)}%</b></div></div>`).join('');
 const usageToggle=extra=>extra?`<button class="more-toggle" type="button" aria-expanded="false"><span class="show-more">${text(bi(`加载更多（后 ${extra} 项）`,`Show more (next ${extra})`))}</span><span class="show-less">${text(bi(`收起后 ${extra} 项`,`Collapse ${extra} items`))}</span></button>`:'';
 function chinaUsageRanking(id,title,description,items,insight,takeaway,type='multiple'){
@@ -464,7 +464,7 @@ function xcodeQuestionTreemap(report){
   const W=100,H=56;const max=Math.max(...report.items.map(i=>i[1]));/* Tiny shares get a minimum layout weight so their tile can still hold its label. */
   const weight=v=>Math.max(v,4.5);const sum=report.items.reduce((a,i)=>a+weight(i[1]),0);
   const laid=squarify(report.items.map(([label,value])=>({label,value,a:weight(value)/sum*W*H})),0,0,W,H);
-  const tiles=laid.map(t=>{const size=t.value>=30?'is-l':t.value>=15?'is-m':t.value>=4?'is-s':'is-xs';return `<article class="tile ${size}" role="listitem" tabindex="0" title="${text(t.label)}: ${t.value}%" aria-label="${text(t.label)}: ${t.value}%" style="left:${t.x}%;top:${t.y/H*100}%;width:${t.w}%;height:${t.h/H*100}%;${treemapTone(t.value/max)}"><strong>${t.value}%</strong><p>${text(t.label)}</p></article>`}).join('');
+  const tiles=laid.map(t=>{const size=t.value>=30?'is-l':t.value>=15?'is-m':t.value>=4?'is-s':'is-xs';const row=t.w/t.h>3?' is-row':'';return `<article class="tile ${size}${row}" role="listitem" tabindex="0" title="${text(t.label)}: ${t.value}%" aria-label="${text(t.label)}: ${t.value}%" style="left:${t.x}%;top:${t.y/H*100}%;width:${t.w}%;height:${t.h/H*100}%;${treemapTone(t.value/max)}"><strong>${t.value}%</strong><p>${text(t.label)}</p></article>`}).join('');
   return card({cls:'q-card is-treemap',id:report.id,title:report.title,type:report.questionType||'multiple',insight:stripPrefix(text(report.insight)),body:`<div class="treemap" role="list">${tiles}</div>`,tools:note(text(bi('列表按选择比例从高到低排序，颜色越深占比越高；每位受访者最多选择 3 项，选项可重叠，因此比例不相加为 100%。','Ranked by selection share, with darker rows indicating higher shares. Each respondent selected up to three capabilities; choices overlap, so percentages do not sum to 100%.'))),foot:note(text(report.note))})}
 function prioritySpotlight(){
   const ranked=priorities.map((p,i)=>({...p,i})).sort((a,b)=>b.rate-a.rate||a.i-b.i);

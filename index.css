@@ -352,9 +352,12 @@ button.lc-row .lc-chev { background: var(--accent-soft); border: 1px solid var(-
 .tile.is-s { padding: 10px 12px; }
 .tile.is-s strong { font-size: 17px; }
 .tile.is-s p { font-size: 11.5px; line-height: 1.35; -webkit-line-clamp: 4; }
-.tile.is-xs { flex-direction: row; align-items: center; gap: 8px; padding: 6px 10px; }
-.tile.is-xs strong { flex: none; font-size: 13px; }
-.tile.is-xs p { font-size: 11px; line-height: 1.3; -webkit-line-clamp: 2; }
+.tile.is-xs { padding: 6px 10px; }
+.tile.is-xs strong { font-size: 13px; }
+/* Wide, short tiles: number beside the label so the label still fits */
+.tile.is-row { flex-direction: row; align-items: center; gap: 10px; }
+.tile.is-row strong { flex: none; }
+.tile.is-row p { font-size: 11.5px; line-height: 1.3; -webkit-line-clamp: 2; }
 .q-card.is-treemap .card-tools { display: none; }
 .priority-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
 .priority-leaders, .priority-more { display: grid; align-content: start; gap: 16px; padding: 36px; }
