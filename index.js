@@ -1,6 +1,7 @@
-// Language comes from the URL: /xcode/ is English, /xcode/zh/ is Chinese (each index.html sets <html lang>)
+// /xcode/en/ and /xcode/zh/ force a language (<html lang>); /xcode/ follows the browser language
 const ROOT=new URL('.',document.currentScript.src).href;
-let mode=document.documentElement.lang.startsWith('zh')?'zh':'en';
+const autoLang=document.documentElement.hasAttribute('data-auto-lang');
+let mode=(autoLang?(navigator.languages?.[0]||navigator.language||''):document.documentElement.lang).toLowerCase().startsWith('zh')?'zh':'en';
 let heroShader;
 let respondentWallObserver;
 let lifecycleDetailCleanup;
@@ -538,7 +539,7 @@ function render(){
   document.querySelector('.chapter-nav').innerHTML=chapters.map(([id,label],index)=>{const chapterLabel=text(label);return `<a href="#${id}" data-target="${id}" data-part="${index+1}" title="${chapterLabel.slice(2).trimStart()}"><span class="nav-number">${chapterLabel.slice(0,2)}</span><span class="nav-label">${chapterLabel.slice(2).trimStart()}</span></a>`}).join('');
   updateReadingState();
 }
-document.addEventListener('click',event=>{const button=event.target.closest('[data-language]');if(!button||button.dataset.language===mode)return;mode=button.dataset.language;history.replaceState(null,'',(mode==='zh'?ROOT+'zh/':ROOT)+location.hash);render()});
+document.addEventListener('click',event=>{const button=event.target.closest('[data-language]');if(!button||button.dataset.language===mode)return;mode=button.dataset.language;history.replaceState(null,'',ROOT+mode+'/'+location.hash);render()});
 function updateReadingState(){const heroEl=document.getElementById('hero');document.querySelector('.sidebar')?.classList.toggle('is-visible',!!heroEl&&heroEl.getBoundingClientRect().bottom<window.innerHeight*.55);const max=document.documentElement.scrollHeight-window.innerHeight;const progress=max>0?Math.max(0,Math.min(100,window.scrollY/max*100)):0;document.documentElement.style.setProperty('--reading-progress',progress);let active='';const navLinks=[...document.querySelectorAll('[data-target]')];navLinks.forEach(link=>{const target=document.getElementById(link.dataset.target);if(target&&target.getBoundingClientRect().top<window.innerHeight*.42)active=link.dataset.target});navLinks.forEach(link=>{const isActive=link.dataset.target===active;link.classList.toggle('is-active',isActive);link.toggleAttribute('aria-current',isActive)})}
 window.addEventListener('scroll',updateReadingState,{passive:true});window.addEventListener('resize',updateReadingState);
 render();
